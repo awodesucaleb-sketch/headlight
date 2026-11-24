@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Head Light Lab</title>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Head Light">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="theme-color" content="#0a0b0f">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icons/icon-180.png">
+<link rel="apple-touch-icon" href="icons/icon-180.png">
+<link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+<div id="loader" role="status" aria-live="polite">
+  <div class="ld-top"><span>Head Light Lab</span><span>3D lighting study</span></div>
+  <div>
+    <div class="ld-mid"><div class="ld-num" id="ldNum">000</div><div class="ld-pct">%</div></div>
+    <div class="ld-bar"><i id="ldBar"></i></div>
+  </div>
+  <div class="ld-bot"><span id="ldMsg">Loading libraries</span><span>Model: Asaro-head, ivan4akir, CC BY 4.0</span></div>
+</div>
+<script>setTimeout(function(){if(!window.__ready){var m=document.getElementById('ldMsg');if(m)m.textContent='Still loading. Check your connection.';}},12000);</script>
+<div class="app">
+  <div id="view"><div class="fig">Fig. 01<br>Asaro head</div><div class="hint">Drag to orbit · scroll or pinch to zoom</div></div>
+  <aside>
+    <h1>Head<br>Light<br>Lab</h1>
+    <p class="sub">Place lights around the head and see how direction, colour and intensity shape the face.</p>
+    <div class="row" id="undoRow"><button id="undo" disabled aria-label="Undo last change">← Undo</button><button id="redo" disabled aria-label="Redo">Redo →</button></div>
+
+    <h2>Lights</h2>
+    <div class="row" id="addRow">
+      <button data-add="directional">+ Directional</button>
+      <button data-add="point">+ Point</button>
+      <button data-add="spot">+ Spot</button>
+      <button id="addRim">+ Rim light</button>
+    </div>
+    <div class="row" id="chips" style="margin-top:10px"></div>
+    <div id="sel"></div>
+
+    <h2>Presets</h2>
+    <div class="row" id="presets">
+      <button data-p="studio">Studio</button>
+      <button data-p="drama">Side drama</button>
+      <button data-p="under">Under-lit</button>
+      <button data-p="top">Top down</button>
+    </div>
+
+    <h2>Cinematic looks</h2>
+    <div class="row" id="cine">
+      <button data-c="teal">Teal and orange</button><button data-c="noir">Film noir</button><button data-c="rembrandt">Rembrandt</button><button data-c="neon">Neon</button><button data-c="golden">Golden hour</button>
+    </div>
+
+    <h2>Camera view</h2>
+    <div class="row" id="heights" style="margin-bottom:8px"><button data-h="level" class="on">Eye level</button><button data-h="high">High angle</button><button data-h="low">Low angle</button></div>
+    <div class="row" id="views">
+      <button data-v="front" class="on">Front</button><button data-v="three-l">Three quarter left</button><button data-v="three-r">Three quarter right</button><button data-v="side-l">Side left</button><button data-v="side-r">Side right</button><button data-v="back">Back</button><button data-v="top">Top</button>
+    </div>
+
+    <div class="ctl"><label for="dist">Zoom</label><input id="dist" type="range" min="0" max="100" step=".1" value="50"><output></output></div>
+
+    <h2>Scene</h2>
+    <label class="chk"><input id="gon" type="checkbox" checked> Ground plane</label>
+    <div class="ctl"><label for="gcol">Ground colour</label><input id="gcol" type="color" value="#8a8f99"><span></span></div>
+    <label class="chk"><input id="lon" type="checkbox" checked> Lighting on</label>
+    <div class="ctl"><label for="amb">Ambient</label><input id="amb" type="range" min="0" max="1" step=".01" value=".08"><output></output></div>
+    <div class="ctl"><label for="shint">Shadow intensity</label><input id="shint" type="range" min="0" max="1" step=".01" value="1"><output></output></div>
+    <div class="ctl"><label for="exp">Exposure</label><input id="exp" type="range" min=".4" max="2.5" step=".01" value="1"><output></output></div>
+    <div class="ctl"><label for="focal">Focal length</label><input id="focal" type="range" min="18" max="200" step="1" value="50"><output></output></div>
+    <label class="chk"><input id="keep" type="checkbox" checked> Keep head size when changing focal length</label>
+    <div class="row" style="margin:4px 0 8px"><button id="fReset">Reset focal length to 50 mm</button></div>
+
+    <h2>Asaro head</h2>
+    <div class="ctl"><label for="skin">Surface</label><input id="skin" type="color" value="#e6e2da"><span></span></div>
+    <div class="ctl"><label for="rough">Roughness</label><input id="rough" type="range" min=".1" max="1" step=".01" value=".8"><output></output></div>
+    <div class="ctl"><label for="yaw">Turn</label><input id="yaw" type="range" min="-180" max="180" step="1" value="0"><output></output></div>
+    <div class="ctl"><label for="pitch">Nod</label><input id="pitch" type="range" min="-60" max="60" step="1" value="0"><output></output></div>
+    <div class="ctl"><label for="roll">Tilt</label><input id="roll" type="range" min="-60" max="60" step="1" value="0"><output></output></div>
+    <div class="row" style="margin:4px 0 8px"><button id="flip">Turn head 180°</button></div>
+    <label class="chk"><input id="spin" type="checkbox"> Turn the head slowly</label>
+    <label class="chk"><input id="mark" type="checkbox" checked> Show light markers</label>
+    <label class="chk"><input id="shad" type="checkbox" checked> Cast shadows</label>
+    <div id="expRow" hidden>
+      <h2>Export</h2>
+      <div class="row"><select id="shotScale" aria-label="Image size"><option value="1">1×</option><option value="2" selected>2×</option><option value="4">4×</option></select><button id="shot">Save image (PNG)</button></div>
+      <p class="empty" id="shotMsg" role="status"></p>
+    </div>
+    <p class="sub" style="margin-top:18px">Model: “Asaro-head” by ivan4akir, <a href="https://sketchfab.com/3d-models/asaro-head-27a3328095ca412eaa5dde8a5da9ff3b" target="_blank" rel="noopener">Sketchfab</a>, licensed CC BY 4.0.</p>
+  </aside>
+</div>
+
+<script src="lib/three.min.js"></script>
+<script>window.THREE||document.write('<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"><\/script>');</script>
+<script src="lib/OrbitControls.js"></script>
+<script>(window.THREE&&THREE.OrbitControls)||document.write('<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"><\/script>');</script>
+<script src="lib/GLTFLoader.js"></script>
+<script>(window.THREE&&THREE.GLTFLoader)||document.write('<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"><\/script>');</script>
+<script src="js/app.js"></script>
+<script src="js/sw-register.js"></script>
+</body>
+</html>

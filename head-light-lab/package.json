@@ -1,0 +1,13 @@
+{
+  "name": "head-light-lab",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Interactive 3D head lighting study",
+  "scripts": {
+    "vendor": "node scripts/vendor.mjs",
+    "build": "node scripts/build.mjs",
+    "start": "npm run build && npx --yes serve dist"
+  },
+  "devDependencies": { "three": "0.128.0" }
+}
